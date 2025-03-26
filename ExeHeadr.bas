@@ -71,14 +71,14 @@ DIM Segment AS LONG
  FileH = FREEFILE
  OPEN ExeFile FOR BINARY LOCK READ WRITE AS FileH
   IF Count > 0 THEN
-   SEEK #FileH, FirstRelocation
+   SEEK #FileH, FirstRelocation - &H1
    FOR Relocation = &H0 TO Count - &H1
-    Item = CVL(INPUT$(&H4, FileH))
-    PRINT HEX$(Item)
+    Offset = CVI(INPUT$(&H2, FileH))
+    Segment = CVI(INPUT$(&H2, FileH))
+    PRINT HEX$(Segment); ":"; HEX$(Offset)
    NEXT Relocation
   END IF
  CLOSE FileH
-
 END SUB
 
 SUB GetHeader (ExeFile AS STRING, Header AS HeaderStr)
