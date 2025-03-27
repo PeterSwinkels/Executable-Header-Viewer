@@ -71,10 +71,14 @@ DIM Segment AS LONG
  FileH = FREEFILE
  OPEN ExeFile FOR BINARY LOCK READ WRITE AS FileH
   IF Count > 0 THEN
-   SEEK #FileH, FirstRelocation - &H1
+   SEEK #FileH, FirstRelocation
    FOR Relocation = &H0 TO Count - &H1
-    Offset = CVI(INPUT$(&H2, FileH))
-    Segment = CVI(INPUT$(&H2, FileH))
+    Byte1 = ASC(INPUT$(&H1, FileH))
+    Byte2 = ASC(INPUT$(&H1, FileH))
+    Byte3 = ASC(INPUT$(&H1, FileH))
+    Byte4 = ASC(INPUT$(&H1, FileH))
+    Offset = CVI(CHR$(Byte2) + CHR$(Byte1))
+    Segment = CVI(CHR$(Byte4) + CHR$(Byte3))
     PRINT HEX$(Segment); ":"; HEX$(Offset)
    NEXT Relocation
   END IF
